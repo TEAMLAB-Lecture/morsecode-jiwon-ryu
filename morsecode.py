@@ -33,7 +33,7 @@ def is_help_command(user_input):
 
 
 def is_validated_english_sentence(user_input):
-    special_letters = set('|`~_@#$%^&*()-+="[]}{' + "'")
+    special_letters = set('|`~_@#$%^&*()-+=:;"[]}{' + "'")
     punctuations = set('!?.,')
     if user_input.strip() != '':
         if len(re.findall('\d', user_input)) == 0:
