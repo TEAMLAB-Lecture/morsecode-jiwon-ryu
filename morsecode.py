@@ -80,11 +80,13 @@ def encoding_sentence(english_sentence):
     new_sentence = list(get_cleaned_english_sentence(english_sentence).upper())
     result = ''
     for i in range(len(new_sentence)):
-        if new_sentence[i] not in get_morse_code_dict().keys():
+        if new_sentence[i]  in get_morse_code_dict().keys():
+            result += encoding_character(new_sentence[i]) + ' '
+            break
+        elif new_sentence[i] not in get_morse_code_dict().keys():
             if new_sentence[i+1] in get_morse_code_dict().keys():
                 result += ' ' 
-        elif new_sentence[i]  in get_morse_code_dict().keys():
-            result += encoding_character(new_sentence[i]) + ' '
+        
         
     # for letter in cleaned_english_sentence:
     #     # if letter.upper() not in get_morse_code_dict().keys():
