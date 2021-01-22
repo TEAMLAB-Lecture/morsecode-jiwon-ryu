@@ -33,7 +33,7 @@ def is_help_command(user_input):
 
 
 def is_validated_english_sentence(user_input):
-    special_letters = set('|`~_@#$%^&*()-+=:;"[]}{' + "'")
+    special_letters = set('_@#$%^&*()-+=[]}{";:|`~' + "'")
     punctuations = set('!?.,')
     if user_input.strip() != '':
         if len(re.findall('\d', user_input)) == 0:
@@ -46,12 +46,18 @@ def is_validated_english_sentence(user_input):
 def is_validated_morse_code(user_input):
     units = {'-', '.', ' '}
     if len(set(user_input) - units) == 0:
-        words = user_input.split(' ')
-        for w in words:
+        units =  {'-', '.', ' ', 'S'}
+        user_input = user_input.strip().replace('  ', 'S').split('S')
+        words = []
+        for word in user_input:
+            word = word.split(' ')
+            words += [w for w in word]
+        for w in set(words):
             if w not in get_morse_code_dict().values():
                 return False
         return True
     return False
+
 
 
 def get_cleaned_english_sentence(raw_english_sentence):
@@ -71,9 +77,17 @@ def encoding_character(english_character):
 
 
 def decoding_sentence(morse_sentence):
-    morse_words_list = morse_sentence.split(' ')
-    result = [decoding_character(morse_word) for morse_word in morse_words_list]
-    return ''.join(result)
+    result = ''
+    morse_words_list = morse_sentence.strip().split(' ')
+    for i in range(len(morse_words_list)-1):
+        if is_validated_morse_code(morse_words_list[i]):
+            result += decoding_character(morse_words_list[i])
+        elif morse_words_list[i+1] == ' ':
+            result += ' '
+    result += decoding_character(morse_words_list[-1])
+    #result = [decoding_character(morse_word) for morse_word in morse_words_list]
+    #return ''.join(result)
+    return result
 
 
 def encoding_sentence(english_sentence):
@@ -114,7 +128,7 @@ def main():
                 print(get_help_message())
             elif is_validated_english_sentence(user_input):
                 print(encoding_sentence(user_input))
-            else:
+            else:   
                 print(decoding_sentence(user_input))
     print("Good Bye")
     print("Morse Code Program Finished!!")
