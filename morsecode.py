@@ -82,7 +82,7 @@ def decoding_sentence(morse_sentence):
     for i in range(len(morse_words_list)-1):
         if is_validated_morse_code(morse_words_list[i]):
             result += decoding_character(morse_words_list[i])
-        elif morse_words_list[i+1] == ' ':
+        elif morse_words_list[i] == '':
             result += ' '
     result += decoding_character(morse_words_list[-1])
     #result = [decoding_character(morse_word) for morse_word in morse_words_list]
